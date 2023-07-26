@@ -20,6 +20,9 @@ app.use( express.json() );      // Lectura Parseo del body
 app.use( '/api/auth', require( './routes/auth.routes' ) );
 app.use( '/api/products', require( './routes/products.routes' ) );
 app.use( '/api/categories', require( './routes/categories.routes' ) );
+app.use( '/api/chapters', require('./routes/chapters.route'));
+app.use( '/api/pages', require('./routes/pages.routes'));
+
 
 dbConnection();                 // Invoca la inicializacion de la base de datos
 
