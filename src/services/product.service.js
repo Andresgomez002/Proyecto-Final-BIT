@@ -8,6 +8,9 @@ const insertProduct = async ( product ) => {
 const getAllProducts = async () => {
     return await ProductModel.find({});
 }
+const getXProducts = async (number, category) => {
+    return await ProductModel.find({category}).limit(number);
+}
 
 const getProductByID = async ( productId ) => {
     return await ProductModel.findOne({ _id: productId }, {
@@ -46,5 +49,6 @@ module.exports = {
     getProductByID,
     removeProductByID,
     updateProductByID,
-    getProductByUserID
+    getProductByUserID,
+    getXProducts
 }

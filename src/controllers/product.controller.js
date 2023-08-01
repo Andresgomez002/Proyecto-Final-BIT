@@ -2,7 +2,7 @@ const { response, request } = require( 'express' );
 const { hashSync, genSaltSync, compareSync } = require( 'bcryptjs' );
 
 const { generateToken } = require( '../helpers/jwt.js' );
-const { insertProduct, getAllProducts, getProductByID, updateProductByID, removeProductByID, getProductByUserID } = require( '../services/product.service' );
+const { insertProduct, getAllProducts, getProductByID, updateProductByID, removeProductByID, getProductByUserID, getXProducts } = require( '../services/product.service' );
 
 const User = require( '../models/User' );
 
@@ -16,6 +16,28 @@ const getProducts = async ( req = request, res = response ) => {
             ok: true,
             path: '/products',
             msg: 'Obtiene todos los productos',
+            products: data
+        }); 
+    } 
+    catch ( error ) {
+        console.log( error );
+        return res.status( 500 ).json({
+            ok: false,
+            path: '/products',
+            msg: 'Error al obtener los productos'
+        });    
+    }
+
+}
+const getNProducts = async ( req = request, res = response ) => {
+
+    try {
+        const data = await getXProducts(req.params.number, req.params.category)   // Pendiente
+
+        res.status( 201 ).json({
+            ok: true,
+            path: '/products',
+            msg: 'Obtiene n productos',
             products: data
         }); 
     } 
@@ -172,5 +194,6 @@ module.exports = {
     getProductById,
     updateProduct,
     deleteProduct,
-    getProductsByUserId
+    getProductsByUserId,
+    getNProducts
 }

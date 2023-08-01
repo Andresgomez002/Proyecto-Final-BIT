@@ -5,7 +5,7 @@ const validateInputFields = require('../middlewares/validate-input-fields.middle
 const { validateToken } = require('../middlewares/validate-jwt.middleware');
 const upload = require('../middlewares/uploadFile')
 // const {} = require('../middlewares/uploadFile')
-const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, getProductsByUserId } = require('../controllers/product.controller');
+const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, getProductsByUserId, getNProducts } = require('../controllers/product.controller');
 
 const router = Router();
 
@@ -25,13 +25,17 @@ router.get(
     getProductById
 );
 
+
 // Ruta para obtener todos los productos de un usuario
 router.get( 
     '/user/:id', 
     validateToken,
     getProductsByUserId
 );
-
+router.get( 
+    '/:category/:number', 
+    getNProducts
+);
 // Ruta para crear producto (Restringida)
 router.post( 
     '/', 
