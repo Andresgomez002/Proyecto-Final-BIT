@@ -9,7 +9,13 @@ const chapterSchema = new Schema(
         mangaId: {
             type: String,
             required: true
-        },
+        }, 
+        archivos: [
+            {
+              type: String,
+              required: true,
+            },
+          ],
         pages: {
             type: Number,
             required: false

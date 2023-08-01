@@ -10,24 +10,12 @@ const productSchema = new Schema(
             type: String,
             required: true
         },
-        price: {
-            type: Number,
-            required: false
+        description: {
+            type: String
         },
         urlImage: {
             type: String,
             required: false
-        },
-        description: {
-            type: String
-        },
-        quantity: {
-            type: Number,
-            required: true
-        },
-        ranking: {
-            type: Number,
-            default: 0
         },
         /** Atributos vinculantes */
         category: {

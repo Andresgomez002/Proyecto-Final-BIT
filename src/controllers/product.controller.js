@@ -84,6 +84,10 @@ const createProduct = async ( req = request, res = response ) => {
 
     try {
         inputData.userId = userId;
+        const urlImage = req.file ? req.file.path : '';
+
+      
+        inputData.urlImage = urlImage;
 
         const data = await insertProduct( inputData );
 
