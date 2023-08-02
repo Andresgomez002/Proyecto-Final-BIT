@@ -5,7 +5,7 @@ const validateInputFields = require('../middlewares/validate-input-fields.middle
 const { validateToken } = require('../middlewares/validate-jwt.middleware');
 const upload = require('../middlewares/uploadFile')
 // const {} = require('../middlewares/uploadFile')
-const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, getProductsByUserId, getNProducts } = require('../controllers/product.controller');
+const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, getProductsByUserId, getNProducts, searchPro } = require('../controllers/product.controller');
 
 const router = Router();
 
@@ -32,6 +32,13 @@ router.get(
     validateToken,
     getProductsByUserId
 );
+
+router.get( 
+    '/search/:term', 
+    searchPro
+);
+
+
 router.get( 
     '/:category/:number', 
     getNProducts
@@ -58,7 +65,6 @@ router.delete(
     deleteProduct
 );
 // router.post('/upload', authUser, multerMiddleware.array('files', 5), getFile);
-
 
 
 

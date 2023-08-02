@@ -2,21 +2,23 @@ const { response, request } = require( 'express' );
 const { hashSync, genSaltSync, compareSync } = require( 'bcryptjs' );
 
 const { generateToken } = require( '../helpers/jwt.js' );
-const { insertProduct, getAllProducts, getProductByID, updateProductByID, removeProductByID, getProductByUserID, getXProducts } = require( '../services/product.service' );
+const { insertProduct, getAllProducts, getProductByID, updateProductByID, removeProductByID, getProductByUserID, getXProducts, searchByTerm } = require( '../services/product.service' );
 
 const User = require( '../models/User' );
+const ProductModel = require('../models/Products.js');
 
 
 const getProducts = async ( req = request, res = response ) => {
 
     try {
-        const data = await getAllProducts()   // Pendiente
+        let Manganame = new RegExp(`.*${req.params.searchBy || ''}.*`)
+        const products = await ProductModel.find({ name: req.params.searchBy });
 
         res.status( 201 ).json({
             ok: true,
             path: '/products',
             msg: 'Obtiene todos los productos',
-            products: data
+            products
         }); 
     } 
     catch ( error ) {
@@ -28,6 +30,28 @@ const getProducts = async ( req = request, res = response ) => {
         });    
     }
 
+}
+const searchPro = async(req = request, res = response)=>{
+    const term = req.params.term || '';
+
+    try {
+        const data = await searchByTerm( term );
+
+        res.status( 201 ).json({
+            ok: true,
+            path: '/products',
+            msg: 'busca productos  por termino',
+            products: data
+        }); 
+    } 
+    catch ( error ) {
+        console.log( error );
+        return res.status( 500 ).json({
+            ok: false,
+            path: '/products',
+            msg: 'Error al buscar  producto por termino'
+        });    
+    }
 }
 const getNProducts = async ( req = request, res = response ) => {
 
@@ -195,5 +219,6 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getProductsByUserId,
-    getNProducts
+    getNProducts,
+    searchPro
 }

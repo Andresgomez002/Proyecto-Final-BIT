@@ -6,6 +6,7 @@ const insertProduct = async ( product ) => {
 }
 
 const getAllProducts = async () => {
+    
     return await ProductModel.find({});
 }
 const getXProducts = async (number, category) => {
@@ -41,7 +42,15 @@ const updateProductByID = async ( productId, updateProduct ) => {
         { new: true }           // Configuracion para el comando Update
     );
 }
-
+const searchByTerm = async ( searchTerm )=>{
+    const termRegex = new RegExp( searchTerm, 'i' );
+   
+    return await ProductModel.find({
+      $or: [
+        { name: { $regex: termRegex } }
+      ],
+    });
+  }
 
 module.exports = {
     insertProduct,
@@ -50,5 +59,6 @@ module.exports = {
     removeProductByID,
     updateProductByID,
     getProductByUserID,
-    getXProducts
+    getXProducts,
+    searchByTerm
 }
