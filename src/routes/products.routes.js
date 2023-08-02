@@ -6,6 +6,7 @@ const { validateToken } = require('../middlewares/validate-jwt.middleware');
 const upload = require('../middlewares/uploadFile')
 // const {} = require('../middlewares/uploadFile')
 const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, getProductsByUserId, getNProducts, searchPro } = require('../controllers/product.controller');
+const { getAllProducts } = require('../services/product.service');
 
 const router = Router();
 

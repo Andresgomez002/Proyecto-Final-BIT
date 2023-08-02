@@ -43,13 +43,19 @@ const updateProductByID = async ( productId, updateProduct ) => {
     );
 }
 const searchByTerm = async ( searchTerm )=>{
-    const termRegex = new RegExp( searchTerm, 'i' );
+
+    if(searchTerm){
+        const termRegex = new RegExp( searchTerm, 'i' );
    
-    return await ProductModel.find({
-      $or: [
-        { name: { $regex: termRegex } }
-      ],
-    });
+        return await ProductModel.find({
+          $or: [
+            { name: { $regex: termRegex } }
+          ],
+        });
+    }else{
+        return await ProductModel.find({});
+    }
+  
   }
 
 module.exports = {

@@ -11,13 +11,13 @@ const ProductModel = require('../models/Products.js');
 const getProducts = async ( req = request, res = response ) => {
 
     try {
-        let Manganame = new RegExp(`.*${req.params.searchBy || ''}.*`)
-        const products = await ProductModel.find({ name: req.params.searchBy });
-
+      const products = await getAllProducts()
+console.log('hola');
         res.status( 201 ).json({
             ok: true,
             path: '/products',
             msg: 'Obtiene todos los productos',
+            total: products.length,
             products
         }); 
     } 
