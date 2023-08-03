@@ -3,6 +3,8 @@ const { hashSync, genSaltSync, compareSync } = require( 'bcryptjs' );
 
 const { generateToken } = require( '../helpers/jwt.js' );
 const { insertProduct, getAllProducts, getProductByID, updateProductByID, removeProductByID, getProductByUserID, getXProducts, searchByTerm } = require( '../services/product.service' );
+const { PATH_STORAGE } = require( '../middlewares/uploadFile.js' );
+const path = require( 'path' );
 
 const User = require( '../models/User' );
 const ProductModel = require('../models/Products.js');
@@ -127,6 +129,26 @@ const getProductsByUserId = async ( req = request, res = request ) => {
 const createProduct = async ( req = request, res = response ) => {
     const inputData = req.body;
     const userId = req.authUser.uid;
+
+     // Verifica si se ha subido un archivo
+     if ( ! req.file ) {
+        return res.status( 400 ).json({ error: 'Debes subir un archivo' });
+    }
+
+    // Asegúrate de que PATH_STORAGE esté definido y tenga el valor correcto
+    if ( ! PATH_STORAGE ) {
+        res.status( 500 ).json({
+            ok: false,
+            path: '/products',
+            msg: 'No se ha configurado correctamente la ruta de almacenamiento de archivos',
+        }); 
+    }
+
+    const filePath = path.join( PATH_STORAGE, req.file.filename );        // Obtiene la ruta del archivo subido
+
+    // Aquí puedes hacer lo que necesites con la ruta del archivo
+    // Por ejemplo, puedes guardar el `filePath` en la base de datos junto con otros datos del producto
+    const newProduct = { ...inputData, userId, urlImage: filePath };
 
     try {
         inputData.userId = userId;

@@ -3,7 +3,7 @@ const { createUser, loginUser, renewToken } = require('../controllers/auth.contr
 const { check } = require('express-validator');
 const validateInputFields = require('../middlewares/validate-input-fields.middleware');
 const { validateToken } = require('../middlewares/validate-jwt.middleware');
-const upload = require('../middlewares/uploadFile')
+const { multerMiddleware } = require('../middlewares/uploadFile')
 // const {} = require('../middlewares/uploadFile')
 const { getProducts, createProduct, getProductById, updateProduct, deleteProduct, getProductsByUserId, getNProducts, searchPro } = require('../controllers/product.controller');
 const { getAllProducts } = require('../services/product.service');
@@ -48,7 +48,7 @@ router.get(
 router.post( 
     '/', 
     validateToken,
-    upload.single('UrlImage'),
+    multerMiddleware.single('urlImage'),
     createProduct
 );
 
@@ -56,6 +56,7 @@ router.post(
 router.patch( 
     '/:id', 
     validateToken,
+    multerMiddleware.single('urlImage'),
     updateProduct
 );
 

@@ -1,47 +1,38 @@
-const express = require('express');
-const multer = require('multer');
-const app = express();
 
-// const PATH_STORAGE = `${ process.cwd() }/imageUpload`;
+const { request } = require( 'express' );
+const multer = require( 'multer' );
 
 
-// Configura el almacenamiento de las imágenes
+
+
+// Ruta de almacenamiento para los archivos subidos
+const PATH_STORAGE = `${ process.cwd() }/uploads`;
+
+// Configuración del almacenamiento de Multer
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // cb(null, '/imageUpload');
-  },
-  filename: function (req, file, cb) {
-    // Define un nombre único para cada imagen
-    cb(null, Date.now() + '-' + file.originalname);
-  },
+    destination( req = request, file, cb ) {
+        // La función `destination` define la carpeta de destino para almacenar los archivos
+        // En este caso, se utiliza `PATH_STORAGE` como carpeta de destino
+
+        cb( null, PATH_STORAGE );
+    },
+    filename( req = request, file, cb ) {
+        // La función `filename` define el nombre del archivo en el servidor
+        // En este caso, se genera un nombre aleatorio utilizando la fecha actual y la extensión del archivo original
+        const ext = file.originalname.split('.').pop();
+        const fileNameRandom = `image-${ Date.now() }.${ext}`;
+
+        cb( null, fileNameRandom );
+    }
 });
 
-// Filtrar los archivos para aceptar solo imágenes
-const fileFilter = function (req, file, cb) {
-  if (
-    file.mimetype === 'image/jpeg' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/gif'
-  ) {
-    cb(null, true);
-  } else {
-    cb(new Error('Solo se permiten imágenes JPEG, PNG y GIF.'), false);
-  }
-};
 
-// Configura multer con las opciones definidas
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-});
-module.exports = upload;
+// Middleware de Multer para gestionar la subida de archivos sobre las rutas de Express
+const multerMiddleware = multer({ storage });
 
-// // Ruta para manejar la subida de las imágenes
-// app.post('/subir', upload.array('imagenes', 5), (req, res) => {
-//   // Aquí puedes manejar las imágenes subidas
-//   console.log(req.files); // Array con información de las imágenes subidas
-//   res.send('Imágenes subidas con éxito.');
-// });
 
+module.exports = {
+  multerMiddleware,
+  PATH_STORAGE
+}
 
