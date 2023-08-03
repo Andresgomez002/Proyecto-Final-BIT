@@ -22,6 +22,7 @@ app.use( '/api/products', require( './routes/products.routes' ) );
 app.use( '/api/categories', require( './routes/categories.routes' ) );
 app.use( '/api/chapters', require('./routes/chapters.route'));
 app.use( '/api/pages', require('./routes/pages.routes'));
+app.use( '/api/notice', require('./routes/notice.routes'));
 
 
 
