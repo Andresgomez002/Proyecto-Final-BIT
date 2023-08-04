@@ -23,6 +23,7 @@ app.use( '/api/categories', require( './routes/categories.routes' ) );
 app.use( '/api/chapters', require('./routes/chapters.route'));
 app.use( '/api/pages', require('./routes/pages.routes'));
 app.use( '/api/notice', require('./routes/notice.routes'));
+app.use( '/api/comment', require('./routes/comment.routes'));
 
 
 

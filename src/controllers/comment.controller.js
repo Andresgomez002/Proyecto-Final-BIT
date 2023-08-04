@@ -1,14 +1,14 @@
-
-const { getNotices, insertNotice, reformNotice, removeNotice } = require('../services/notice.service');
-
+const { getComment, insertComment, reformComment, removeComment } = require("../services/commets.service");
 
 
-const getAllNotice = async(req , res)=>{
+
+
+const getAllComment = async(req , res)=>{
    try {
-    const data = await getNotices()
+    const data = await getComment()
     res.status(200).json({
         ok: true,
-        path: '/notice',
+        path: '/comment',
         msg: 'obtener',
         products: data
     })
@@ -16,19 +16,19 @@ const getAllNotice = async(req , res)=>{
     console.log(error);
     res.status(500).json({
         ok: false,
-        path: '/notice',
+        path: '/comment',
         msg: 'error al obtener',
         
     })
    }
 }
-const createNotice = async(req , res)=>{
+const createComment = async(req , res)=>{
     const inputData = req.body;
   try {
-    const data = await insertNotice(inputData);
+    const data = await insertComment(inputData);
     res.status(201).json({
         ok: true,
-        path: '/notice',
+        path: '/commets',
         msg: 'crear',
         category: data
     })
@@ -36,20 +36,20 @@ const createNotice = async(req , res)=>{
     console.log(error);
     res.status(500).json({
         ok: false,
-        path: '/notice',
+        path: '/comment',
         msg: 'error al crear',
         
     })
   }
 }
-const updateNotice = async(req , res)=>{
+const updateComment = async(req , res)=>{
     const inputData = req.params.id;
     const dataBody = req.body;
     try {
-        const data = await reformNotice(inputData, dataBody);
+        const data = await reformComment(inputData, dataBody);
         res.status(201).json({
             ok: true,
-            path: '/notice',
+            path: '/comment',
             msg: 'actualizar',
             category: data
         })
@@ -57,19 +57,19 @@ const updateNotice = async(req , res)=>{
         console.log(error);
         res.status(500).json({
             ok: false,
-            path: '/notice',
+            path: '/comment',
             msg: 'error al actualizar',
             
         })
       }
 }
-const deleteNotice = async(req , res)=>{
+const deleteComment = async(req , res)=>{
     const inputData = req.params.id;
    try {
-    const data = await removeNotice(inputData);
+    const data = await removeComment(inputData);
     res.status(200).json({
         ok: true,
-        path: '/notice',
+        path: '/comment',
         msg: 'elimina',
         category: data
     })
@@ -77,7 +77,7 @@ const deleteNotice = async(req , res)=>{
     console.log(error);
     res.status(500).json({
         ok: false,
-        path: '/notice',
+        path: '/comment',
         msg: 'error al eliminar',
         
     })
@@ -85,8 +85,8 @@ const deleteNotice = async(req , res)=>{
 }
 
 module.exports = {
-    getAllNotice,
-    createNotice,
-    updateNotice,
-    deleteNotice
+    getAllComment,
+    createComment,
+    updateComment,
+    deleteComment
 }
