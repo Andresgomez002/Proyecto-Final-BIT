@@ -1,34 +1,50 @@
 
 const { request } = require( 'express' );
 const multer = require( 'multer' );
+const path = require('path');
 
 
 
 
 // Ruta de almacenamiento para los archivos subidos
-const PATH_STORAGE = `${ process.cwd() }/uploads`;
+const PATH_STORAGE = `./public/uploads/`;
 
 // Configuración del almacenamiento de Multer
 const storage = multer.diskStorage({
     destination( req = request, file, cb ) {
-        // La función `destination` define la carpeta de destino para almacenar los archivos
-        // En este caso, se utiliza `PATH_STORAGE` como carpeta de destino
+        // La función destination define la carpeta de destino para almacenar los archivos
+        // En este caso, se utiliza PATH_STORAGE como carpeta de destino
 
         cb( null, PATH_STORAGE );
     },
     filename( req = request, file, cb ) {
-        // La función `filename` define el nombre del archivo en el servidor
+        // La función filename define el nombre del archivo en el servidor
         // En este caso, se genera un nombre aleatorio utilizando la fecha actual y la extensión del archivo original
-        const ext = file.originalname.split('.').pop();
-        const fileNameRandom = `image-${ Date.now() }.${ext}`;
+        const ext = path.extname(file.originalname);
+        const fileName = file.originalname.toLocaleLowerCase().split(' ').join( '-' );
+        const fileNameRandom = `image-${ Date.now() }${ext}`;
 
         cb( null, fileNameRandom );
     }
 });
 
-
 // Middleware de Multer para gestionar la subida de archivos sobre las rutas de Express
-const multerMiddleware = multer({ storage });
+const multerMiddleware = multer({ 
+    storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    /* fileFilter: ( req, file, done ) => {
+        if( file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg' || file.mimetype == 'image/gif' ) {
+            done( null, true );
+        }
+        else {
+            done( null, false );
+        }
+
+        return done( new Error( 'Only .png, .jpg, .jpeg and .gif' ) );
+    }  */
+}); 
 
 
 module.exports = {

@@ -127,6 +127,7 @@ const getProductsByUserId = async ( req = request, res = request ) => {
 }
 
 const createProduct = async ( req = request, res = response ) => {
+    const URL = `${req.protocol}://${req.get( 'host' )}`
     const inputData = req.body;
     const userId = req.authUser.uid;
 
@@ -148,16 +149,16 @@ const createProduct = async ( req = request, res = response ) => {
 
     // Aquí puedes hacer lo que necesites con la ruta del archivo
     // Por ejemplo, puedes guardar el `filePath` en la base de datos junto con otros datos del producto
-    const newProduct = { ...inputData, userId, urlImage: filePath };
+    const newProduct = { 
+        name: inputData.name,
+        description: inputData.description,
+        category: inputData.category,
+         userId, 
+         urlImage: `${URL}/uploads/${req.file.filename}` 
+        };
 
     try {
-        inputData.userId = userId;
-        const urlImage = req.file ? req.file.path : '';
-
-      
-        inputData.urlImage = urlImage;
-
-        const data = await insertProduct( inputData );
+        const data = await insertProduct( newProduct );
 
         res.status( 201 ).json({
             ok: true,

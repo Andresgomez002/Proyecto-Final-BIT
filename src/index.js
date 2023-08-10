@@ -12,7 +12,8 @@ const
 // console.log( process.env );
 
 /** Middleware de Express */
-app.use( express.static( 'public') );   // Directorio público
+app.use( express.static( 'public' ) );   // Directorio público
+app.use( express.static( 'uploads' ) );   // Directorio público
 app.use( cors() );              // Cross-Origin-Resources-Sharing
 app.use( express.json() );      // Lectura Parseo del body
 
