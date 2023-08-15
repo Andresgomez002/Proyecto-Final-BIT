@@ -17,6 +17,10 @@ const productSchema = new Schema(
             type: String,
             required: false
         },
+        imageMain: {
+            type: String,
+            required: false
+        },
         /** Atributos vinculantes */
         category: {
             type: String,

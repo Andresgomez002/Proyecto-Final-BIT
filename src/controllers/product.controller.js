@@ -131,7 +131,8 @@ const createProduct = async ( req = request, res = response ) => {
     const inputData = req.body;
     const userId = req.authUser.uid;
 
-    console.log( req.file)
+    console.log( 'holaaaaaa' );
+    console.log( req.file )
 
      // Verifica si se ha subido un archivo
      if ( ! PATH_STORAGE ) {
@@ -171,14 +172,29 @@ const createProduct = async ( req = request, res = response ) => {
 }
 
 const updateProduct = async ( req = request, res = response ) => {
-    const 
-        productId = req.params.id,
-        inputData = req.body;
+    const URL = `${req.protocol}://${req.get( 'host' )}`;
+    const productId = req.params.id;
+    const inputData = req.body;
+    const userId = req.authUser.uid;
 
-        console.group( '----' );
-        console.log( productId );
-        console.log( inputData );
-        console.groupEnd( '----' );
+    console.log( req.file)
+
+     // Verifica si se ha subido un archivo
+     if ( ! PATH_STORAGE ) {
+        res.status( 500 ).json({
+            ok: false,
+            path: '/products',
+            msg: 'No se ha configurado correctamente la ruta de almacenamiento de archivos',
+        }); 
+    }
+
+    const filePath = path.join( PATH_STORAGE, req.file.filename );        // Obtiene la ruta del archivo subido
+
+    // Aquí puedes hacer lo que necesites con la ruta del archivo
+    // Por ejemplo, puedes guardar el `filePath` en la base de datos junto con otros datos del producto
+    const newProduct = { ...inputData, userId, urlImage: `${URL}/uploads/${req.file.filename}` };
+
+    console.log(`${URL}/uploads/${req.file.filename}`);
 
 
     try {

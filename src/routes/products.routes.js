@@ -49,6 +49,7 @@ router.post(
     '/', 
     validateToken,
     multerMiddleware.single('urlImage'),
+    // multerMiddleware.single('imageMain'),
     createProduct
 );
 
