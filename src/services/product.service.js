@@ -2,7 +2,9 @@ const ProductModel = require( '../models/Products.js' );
 
 
 const insertProduct = async ( product ) => {
-    return await ProductModel.create( product );
+    const newProduct = new ProductModel( product );
+
+    return await newProduct.save();
 }
 
 const getAllProducts = async () => {

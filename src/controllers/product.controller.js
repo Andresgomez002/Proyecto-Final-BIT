@@ -131,13 +131,10 @@ const createProduct = async ( req = request, res = response ) => {
     const inputData = req.body;
     const userId = req.authUser.uid;
 
-     // Verifica si se ha subido un archivo
-     if ( ! req.file ) {
-        return res.status( 400 ).json({ error: 'Debes subir un archivo' });
-    }
+    console.log( req.file)
 
-    // Asegúrate de que PATH_STORAGE esté definido y tenga el valor correcto
-    if ( ! PATH_STORAGE ) {
+     // Verifica si se ha subido un archivo
+     if ( ! PATH_STORAGE ) {
         res.status( 500 ).json({
             ok: false,
             path: '/products',
@@ -149,21 +146,16 @@ const createProduct = async ( req = request, res = response ) => {
 
     // Aquí puedes hacer lo que necesites con la ruta del archivo
     // Por ejemplo, puedes guardar el `filePath` en la base de datos junto con otros datos del producto
-    const newProduct = { 
-        name: inputData.name,
-        description: inputData.description,
-        category: inputData.category,
-         userId, 
-         urlImage: `${URL}/uploads/${req.file.filename}` 
-        };
+    const newProduct = { ...inputData, userId, urlImage: `${URL}/uploads/${req.file.filename}` };
 
     try {
         const data = await insertProduct( newProduct );
-
+    
+        // Devuelve una respuesta adecuada al cliente
         res.status( 201 ).json({
             ok: true,
             path: '/products',
-            msg: 'Crea producto',
+            msg: 'Producto creado exitosamente',
             product: data
         }); 
     } 
